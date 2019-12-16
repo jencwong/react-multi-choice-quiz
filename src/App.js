@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import quizQuestions from './api/quizQuestions';
-import Quiz from './components/Quiz';
-import Result from './components/Result';
-import logo from './svg/logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import quizQuestions from "./api/quizQuestions";
+import Quiz from "./components/Quiz";
+import Result from "./components/Result";
+// import logo from "./svg/logo.svg";
+import "./App.css";
 
 class App extends Component {
   constructor(props) {
@@ -12,11 +12,12 @@ class App extends Component {
     this.state = {
       counter: 0,
       questionId: 1,
-      question: '',
+      question: "",
       answerOptions: [],
-      answer: '',
+      answer: "",
       answersCount: {},
-      result: ''
+      ans_combination: [],
+      result: ""
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -54,6 +55,7 @@ class App extends Component {
 
   handleAnswerSelected(event) {
     this.setUserAnswer(event.currentTarget.value);
+    this.setAnsCombination(event.currentTarget.value);
 
     if (this.state.questionId < quizQuestions.length) {
       setTimeout(() => this.setNextQuestion(), 300);
@@ -70,6 +72,13 @@ class App extends Component {
       },
       answer: answer
     }));
+    return answer;
+  }
+
+  setAnsCombination(answer) {
+    this.setState(prevState => ({
+      ans_combination: [...prevState.ans_combination, answer]
+    }));
   }
 
   setNextQuestion() {
@@ -81,25 +90,33 @@ class App extends Component {
       questionId: questionId,
       question: quizQuestions[counter].question,
       answerOptions: quizQuestions[counter].answers,
-      answer: ''
+      answer: ""
     });
   }
 
   getResults() {
+    const ans_combination = this.state.ans_combination;
     const answersCount = this.state.answersCount;
-    const answersCountKeys = Object.keys(answersCount);
-    const answersCountValues = answersCountKeys.map(key => answersCount[key]);
-    const maxAnswerCount = Math.max.apply(null, answersCountValues);
+    console.log(answersCount);
+    console.log(ans_combination);
+    const answersCountKeys = Object.keys(answersCount).join("");
+    // const answersCountValues = answersCountKeys.map(key => answersCount[key]);
+    // const maxAnswerCount = Math.max.apply(null, answersCountValues);
+    console.log(answersCountKeys);
+    return ans_combination;
 
-    return answersCountKeys.filter(key => answersCount[key] === maxAnswerCount);
+    // return answersCountKeys;
+
+    // return answersCountKeys.filter(key => answersCount[key] === maxAnswerCount);
   }
 
   setResults(result) {
-    if (result.length === 1) {
-      this.setState({ result: result[0] });
-    } else {
-      this.setState({ result: 'Undetermined' });
-    }
+    this.setState({ result: result });
+    // if (result.length === 1) {
+    //   this.setState({ result: result[0] });
+    // } else {
+    //   this.setState({ result: "Undetermined" });
+    // }
   }
 
   renderQuiz() {
@@ -123,8 +140,14 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>React Quiz</h2>
+          <img
+            src="https://i.imgur.com/25gKmFc.png"
+            className="App-logo"
+            alt="logo"
+          />
+          <div className="Title">
+            <h2>Vacay Ai's Questionnaire</h2>
+          </div>
         </div>
         {this.state.result ? this.renderResult() : this.renderQuiz()}
       </div>

@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { CSSTransitionGroup } from 'react-transition-group';
+import React from "react";
+// import PropTypes from "prop-types";
+import { CSSTransitionGroup } from "react-transition-group";
 
 function Result(props) {
   return (
@@ -20,8 +20,8 @@ function Result(props) {
   );
 }
 
-Result.propTypes = {
-  quizResult: PropTypes.string.isRequired
-};
+// Result.propTypes = {
+//   quizResult: PropTypes.string.isRequired
+// };
 
 export default Result;
